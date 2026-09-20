@@ -9,7 +9,8 @@ __pycache__/
 # Downloaded datasets (769 MB) -- rebuilt by code/prep.py
 data/
 
-# Raw downloaded archives (501 MB) -- re-fetched from SNAP Stanford by prep.py
+# Raw downloaded archives (480 MB) -- restored at any time by code/download_raw.py
+# (code/prep.py consumes raw/ but never downloads it)
 raw/
 
 # Unzipped copy of the figure bundle -- the zip and figures/ already carry these
