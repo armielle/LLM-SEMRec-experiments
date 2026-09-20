@@ -254,3 +254,34 @@ evidence that the reported figures are not inflated by leakage.
 Windows 11, 8 cores, 34 GB RAM, **no GPU**. Python 3.11, PyTorch CPU.
 LaTeX was rendered with Tectonic (MiKTeX under another Windows account was not
 readable from this session).
+
+---
+
+## Licensing
+
+This repository is dual-licensed by content type.
+
+| Content | License |
+|---|---|
+| Code (`code/`) | [MIT](LICENSE) |
+| Text and figures (`figures/`, `tables/`, `latex/`, `*.md`, the recap documents) | [CC BY 4.0](LICENSE-CC-BY-4.0) |
+
+Reusing the code means complying with MIT. Reusing figures or text means
+attributing this repository and the paper.
+
+**Datasets are covered by neither license, and none are redistributed here.**
+`data/`, `raw/` and `cache/` are gitignored. `code/prep.py` and
+`code/download_images.py` retrieve the sources from their original locations,
+so you obtain them directly from the rights holders under their own terms.
+
+- **MovieLens-1M** — GroupLens Research, University of Minnesota. Its usage
+  license forbids redistribution and commercial use without separate
+  permission, and requires acknowledgement. Cite Harper & Konstan, *The
+  MovieLens Datasets: History and Context*, ACM TiiS 5(4), 2015.
+- **Amazon Reviews 2014 (Beauty, Fashion)** — intended for academic research;
+  check the terms published with the dataset before redistributing anything
+  derived from it.
+- **Qwen3-Embedding-0.6B** and **SigLIP 2 base** are both Apache-2.0. They are
+  used frozen, unmodified, and are not redistributed here — only the embeddings
+  computed from them leave this repository, and those fall under the licenses
+  above.
