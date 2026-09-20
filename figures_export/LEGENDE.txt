@@ -1,0 +1,453 @@
+============================================================
+LLM-SEMRec — 16 figures (PDF vectoriels) + légendes
+============================================================
+
+SOMMAIRE
+--------
+  PARTIE A  8 figures principales  (fig1 ... fig10)
+  PARTIE B  8 figures supplémentaires (figS2 ... figS9)
+  ANNEXE    une figure NON incluse (figS1, résultat négatif)
+
+Les noms de fichiers sont ceux du dépôt du projet, afin que chaque figure du
+zip puisse être recoupée directement avec RECAP_results_supporting.pdf et
+SUPPORTING_FIGURES.md.
+
+
+PROVENANCE DES RÉSULTATS
+------------------------
+Toutes les figures sont calculées à partir des artefacts déjà produits par
+l'expérience. Aucune valeur n'est simulée, estimée ou recopiée d'une autre
+source :
+
+  models/llmsemrec__amazon_beauty.pt        modèle entraîné
+  models/eval__*__<dataset>.npz             rangs et scores par utilisateur
+  cache/amazon_beauty_qwen3_0.6b.npy        embeddings texte gelés (12 101 x 1024)
+  cache/amazon_beauty_siglip2_base.npy      embeddings image gelés (12 099 x 768)
+  data/amazon_beauty.pkl                    jeu de données prétraité
+  results/*.json                             métriques agrégées
+
+Scripts : code/make_figures.py (partie A), code/make_figures_supporting.py (partie B)
+
+Format : PDF vectoriel, 1 page par figure, polices embarquées, texte
+sélectionnable, agrandissement sans perte. Utilisable directement en
+\includegraphics.
+
+
+JEUX DE DONNÉES ET PROTOCOLE
+----------------------------
+Amazon Beauty (5-core, catégorie « Beauty » du corpus Amazon 2014)
+  22 363 utilisateurs | 12 101 items | 198 502 interactions | densité 0,0734 %
+  couverture image 99,98 % | couverture texte 100 % | longueur moyenne 8,88
+
+MovieLens-1M (utilisé uniquement dans la partie A)
+  6 040 utilisateurs | 3 416 items | 999 611 interactions | densité 4,8448 %
+  pas d'images (module visuel automatiquement désactivé)
+
+Protocole : 5-core itératif, tri chronologique, leave-two-out (1 validation,
+1 test par utilisateur), classement sur le CATALOGUE COMPLET.
+
+Repères Amazon Beauty : LLM-SEMRec entraîné Recall@10 = 0,0193 ;
+hasard = 0,000083 ; Popularity = 0,0120.
+
+Écarts de configuration par rapport au papier (à déclarer) : machine CPU
+uniquement, d = 128 et dz = 64 (contre d = 256), L = 20 (contre L = 50) ;
+Qwen3-Embedding-0.6B (au lieu de 4B) ; SigLIP2-base ; 1 graine par modèle
+(le papier en demande 5).
+
+
+============================================================
+PARTIE A — 8 FIGURES PRINCIPALES
+============================================================
+
+------------------------------------------------------------
+fig1_architecture.pdf
+------------------------------------------------------------
+Titre : Architecture de LLM-SEMRec
+Contenu : schéma complet du pipeline — encodeurs gelés Qwen3 (texte) et SigLIP2
+(image), tour identifiant/feedback/temps, fusion gated, encodeur hybride
+(CausalTCN + Transformer + GRU), module variationnel, tête d'attention
+temporelle, et les trois objectifs auto-supervisés.
+
+Légende LaTeX :
+  Vue d'ensemble de LLM-SEMRec. Les représentations de contenu produites par
+  les encodeurs gelés sont fusionnées aux signaux d'interaction puis traitées
+  par un encodeur hybride à trois branches, avant la tête de prédiction et les
+  objectifs auxiliaires auto-supervisés.
+
+Valeurs mesurées : néant (figure schématique).
+
+------------------------------------------------------------
+fig2_training_dynamics.pdf
+------------------------------------------------------------
+Titre : Dynamique d'entraînement
+Contenu : perte d'entraînement et métrique de validation au fil des époques,
+modèle complet sur Amazon Beauty.
+
+Légende LaTeX :
+  Dynamique d'entraînement de LLM-SEMRec sur Amazon Beauty. La perte
+  d'entraînement décroît régulièrement et la métrique de validation progresse
+  avant stabilisation, ce qui confirme la stabilité de l'optimisation sur
+  l'ensemble des objectifs.
+
+Mesures : 8 époques, 165 s par époque en moyenne (min 164 s, max 167 s).
+
+------------------------------------------------------------
+fig3_main_ndcg10.pdf
+------------------------------------------------------------
+Titre : Résultats principaux — NDCG@10
+Contenu : comparaison de tous les modèles sur les deux jeux de données
+(Amazon Beauty et MovieLens-1M), classement catalogue complet.
+
+Légende LaTeX :
+  NDCG@10 sur Amazon Beauty et MovieLens-1M (classement catalogue complet).
+  LLM-SEMRec obtient le meilleur NDCG@10 sur les deux jeux de données.
+
+Mesures : Amazon Beauty — LLM-SEMRec 0,0093 contre BPR-MF 0,0063, BERT4Rec
+0,0056, Popularity 0,0055, MM-SASRec 0,0053, LLM-only 0,0049, SASRec 0,0047.
+MovieLens-1M — LLM-SEMRec 0,0160 contre BPR-MF 0,0157, LLM-only 0,0136,
+MM-SASRec 0,0129, BERT4Rec 0,0125.
+
+------------------------------------------------------------
+fig3b_main_recall10.pdf
+------------------------------------------------------------
+Titre : Résultats principaux — Recall@10
+Contenu : idem fig3 pour le Recall@10.
+
+Légende LaTeX :
+  Recall@10 sur Amazon Beauty et MovieLens-1M (classement catalogue complet).
+  LLM-SEMRec domine sur Amazon Beauty ; sur MovieLens-1M, BPR-MF conserve un
+  léger avantage en Recall@10 tandis que LLM-SEMRec mène en NDCG@10 et MRR@10.
+
+Mesures : Amazon Beauty — LLM-SEMRec 0,0193 contre BPR-MF 0,0158, Popularity
+0,0120, BERT4Rec 0,0113, MM-SASRec 0,0113, LLM-only 0,0110, SASRec 0,0095.
+MovieLens-1M — BPR-MF 0,0366, LLM-SEMRec 0,0334, LLM-only 0,0303.
+
+NOTE D'HONNÊTETÉ : sur MovieLens-1M, LLM-SEMRec n'est pas premier en Recall@10.
+Le panneau le montre tel quel.
+
+------------------------------------------------------------
+fig5_sparsity_coldstart.pdf
+------------------------------------------------------------
+Titre : Retour d'information épars et démarrage à froid
+Contenu : (a) performance par bucket de longueur d'historique ; (b) performance
+par bucket de popularité de l'item cible ; (c) rang moyen.
+
+Légende LaTeX :
+  Comportement en régime épars et au démarrage à froid (Amazon Beauty).
+  (a) Recall@10 et NDCG@10 par bucket de longueur d'historique.
+  (b) Recall@10 par bucket de popularité de l'item cible.
+  (c) Rang moyen de l'item cible. La performance ne s'effondre pas sur les
+  historiques courts et croît fortement avec la popularité de la cible.
+
+Mesures — éparsité (n = 11 383 / 4 491 / 6 489) : Recall@10 = 0,0185 / 0,0196 /
+0,0203 ; NDCG@10 = 0,0093 / 0,0088 / 0,0098 ; rang moyen 3 234 / 3 008 / 3 111.
+Démarrage à froid (n = 8 275 / 6 667 / 7 421) : Recall@10 = 0,0037 / 0,0154 /
+0,0400 ; rang moyen 4 384 / 2 689 / 1 746.
+
+------------------------------------------------------------
+fig8_coverage_diversity.pdf
+------------------------------------------------------------
+Titre : Au-delà de la précision — couverture, diversité et nouveauté
+Contenu : (a) couverture du catalogue@10 ; (b) diversité intra-liste@10 ;
+(c) nouveauté@10 (auto-information).
+
+Légende LaTeX :
+  Couverture du catalogue, diversité intra-liste et nouveauté des
+  recommandations @10 (Amazon Beauty). LLM-SEMRec couvre une part nettement
+  plus large du catalogue que les baselines par identifiants ; sa diversité
+  intra-liste est en revanche plus faible, ce qui traduit des listes plus
+  concentrées sur le profil de l'utilisateur.
+
+Mesures — couverture@10 : LLM-SEMRec 0,1502, SASRec 0,0278, LLM-only 0,0250,
+MM-SASRec 0,0175, BERT4Rec 0,0040. Nouveauté@10 : LLM-SEMRec 12,896, LLM-only
+11,284, BPR-MF 10,925, SASRec 10,859, MM-SASRec 10,797, BERT4Rec 9,773.
+Diversité@10 : LLM-SEMRec 0,0085 (la plus faible du panel).
+
+NOTE D'HONNÊTETÉ : la couverture et la nouveauté sont favorables, la diversité
+intra-liste ne l'est pas. Le panneau le montre sans filtrage. (Les modèles
+Caser et GRU4Rec affichent une couverture et une diversité élevées uniquement
+parce que leur classement est proche du hasard, donc dispersé.)
+
+------------------------------------------------------------
+fig9_complexity.pdf
+------------------------------------------------------------
+Titre : Complexité de calcul
+Contenu : (a) nombre de paramètres entraînables ; (b) latence d'inférence en
+fonction de L ; (c) temps d'entraînement par époque.
+
+Légende LaTeX :
+  Complexité de calcul sur une machine sans GPU. (a) Nombre de paramètres
+  entraînables par modèle. (b) Latence d'inférence pour 256 utilisateurs en
+  fonction de la longueur maximale d'historique L, encodage du catalogue
+  complet inclus. (c) Temps d'entraînement par époque. Le modèle reste
+  exploitable sans accélération matérielle.
+
+Mesures : LLM-SEMRec 2 728 734 paramètres entraînables (SASRec 2 222 272 ;
+BERT4Rec 2 222 272 ; BPR-MF 2 205 696 ; MM-SASRec 2 468 160 ; GRU4Rec 1 657 024 ;
+Caser 1 694 792). Latence pour 256 utilisateurs : 53,1 ms (L = 10), 123,6 ms
+(L = 20), 317,6 ms (L = 50). Encodage du catalogue complet (12 101 candidats) :
+118,9 ms. Entraînement : 165 s par époque en moyenne.
+
+------------------------------------------------------------
+fig10_rank_curves.pdf
+------------------------------------------------------------
+Titre : Courbes Recall@K et distribution des rangs
+Contenu : (a) Recall@K pour K = 5 à 50 ; (b) distribution des rangs de l'item
+cible.
+
+Légende LaTeX :
+  (a) Recall@K pour K de 5 à 50 sur Amazon Beauty, classement catalogue
+  complet. (b) Distribution cumulée des rangs de l'item cible. LLM-SEMRec
+  conserve son avantage sur toute la plage de K et place l'item cible à un rang
+  médian nettement plus faible que les baselines.
+
+Mesures (catalogue complet, Amazon Beauty) :
+
+  Modèle        R@5      R@10     R@20     R@50     Rang médian
+  LLM-SEMRec    0,0112   0,0193   0,0349   0,0735   1 604
+  BPR-MF        0,0072   0,0158   0,0277   0,0532   4 280
+  BERT4Rec      0,0070   0,0113   0,0164   0,0278   4 378
+  LLM-only      0,0050   0,0110   0,0164   0,0340   3 486
+  SASRec        0,0054   0,0095   0,0165   0,0357   3 905
+
+Le rang médian de la cible est de 1 604 pour LLM-SEMRec, contre 3 905 pour
+SASRec (facteur 2,4) et 4 378 pour BERT4Rec.
+
+
+============================================================
+PARTIE B — 8 FIGURES SUPPLÉMENTAIRES
+============================================================
+
+------------------------------------------------------------
+figS2_recency_attention.pdf
+------------------------------------------------------------
+Titre : Attention temporelle sensible à la récence et sensibilité à l'évidence
+Panneaux : (a) poids d'attention moyens selon la position relative dans
+l'historique (0 = plus ancien, 1 = plus récent) ; (b) entropie de l'attention
+selon le nombre d'interactions disponibles ; (c) Recall@10 selon le nombre
+d'interactions disponibles.
+
+Légende LaTeX :
+  Attention temporelle sensible à la récence (éq. 33-35). (a) Poids d'attention
+  moyens en fonction de la position relative dans l'historique. (b) Entropie de
+  l'attention en fonction du nombre d'interactions disponibles ; la ligne
+  pointillée marque l'attention uniforme ln L. (c) Recall@10 en fonction du
+  nombre d'interactions disponibles. Le mécanisme apprend une pondération
+  nettement non uniforme et ne s'effondre pas sur les historiques courts.
+
+Revendication soutenue : le mécanisme d'attention temporelle apprend une
+pondération non uniforme et ne dégénère pas.
+
+Mesures : poids maximal 0,30 à la position relative 0,7, contre 0,05 pour une
+attention uniforme (1/L), soit un facteur 6. Entropie 1,15 -> 2,50 nats quand
+l'historique passe de 2 à 20 interactions. Recall@10 quasi plat sur toute la
+plage de longueurs (tendance ~ 0,0000 par 10 interactions).
+
+------------------------------------------------------------
+figS3_modality_dropout.pdf
+------------------------------------------------------------
+Titre : Les deux modalités de contenu sont-elles réellement utilisées ?
+Panneaux : (a) Recall@10 modèle complet / image masquée / texte masqué / les
+deux masqués ; (b) distribution du poids de porte attribué à l'image selon sa
+disponibilité.
+
+Légende LaTeX :
+  Ablation des modalités au moment de l'inférence, sur le modèle entraîné et
+  sans ré-entraînement. (a) Recall@10 lorsque l'image, le texte, ou les deux
+  sont masqués. (b) Distribution du poids de porte de la modalité image selon
+  que l'image est disponible ou non. Les deux canaux apportent une information
+  partiellement redondante mais non substituable.
+
+Revendication soutenue : les deux modalités de contenu sont effectivement
+exploitées par le modèle.
+
+Mesures : modèle complet 0,0193 ; image masquée 0,0185 (-4,2 %) ; texte masqué
+0,0186 (-3,7 %) ; les deux masqués 0,0173 (-10,4 %). Le retrait simultané coûte
+environ 2,5 fois le retrait d'une seule modalité.
+
+------------------------------------------------------------
+figS4_coldstart_availability.pdf
+------------------------------------------------------------
+Titre : Comportement à froid sur Amazon Beauty
+Panneaux : (a) Recall@10 par tercile de popularité de l'item cible ;
+(b) Recall@10 par décile de popularité.
+
+Légende LaTeX :
+  Comportement à froid (Amazon Beauty ; 99,98 % des items portent une image, la
+  disponibilité n'est donc pas un axe exploitable). (a) Recall@10 par tercile de
+  popularité de l'item cible. (b) Recall@10 par décile de popularité de l'item
+  cible. L'avantage du modèle se concentre sur la partie froide du catalogue, là
+  où les signaux d'identifiant sont les plus faibles.
+
+Revendication soutenue : l'avantage du modèle est concentré sur la partie froide
+du catalogue.
+
+Mesures : tercile froid LLM-SEMRec 0,0034 contre 0,0000 pour SASRec et BPR-MF ;
+tercile chaud 0,0391 contre 0,0451 (BPR-MF) et 0,0273 (SASRec). Le modèle mène
+sur les déciles 4 à 9.
+
+NOTE D'HONNÊTETÉ : la couverture d'images étant de 99,98 % (12 099 / 12 101),
+l'axe « disponibilité de la modalité » n'est pas testable sur ce jeu. Le
+panneau (a) est donc restreint aux items disposant d'une image, et le titre de
+la figure le déclare explicitement.
+
+------------------------------------------------------------
+figS5_item_space_geometry.pdf
+------------------------------------------------------------
+Titre : Géométrie de l'espace d'items appris
+Panneaux : (a) projection t-SNE de l'espace d'identifiants seuls ; (b) projection
+t-SNE de l'espace multimodal fusionné ; (c) pureté de catégorie des 10 plus
+proches voisins à deux niveaux de granularité.
+
+Légende LaTeX :
+  Géométrie de l'espace d'items appris (Amazon Beauty, 8 catégories principales,
+  4 000 items échantillonnés). (a) Espace des identifiants seuls. (b) Espace
+  multimodal fusionné. (c) Pureté de catégorie des 10 plus proches voisins, à
+  deux niveaux de granularité. La représentation multimodale est plus organisée
+  sémantiquement que la représentation par identifiants seuls.
+
+Revendication soutenue : la représentation multimodale est plus organisée
+sémantiquement que la représentation par identifiants seuls.
+
+Mesures : pureté 10-NN — identifiants seuls 0,454 (fin, 38 catégories) et 0,592
+(grossier, 6 catégories) ; espace fusionné 0,588 et 0,713. Gain relatif +29,5 %
+(fin) et +20,4 % (grossier). Le panneau (b) fait apparaître un amas « Face »
+nettement détaché, absent du panneau (a).
+
+------------------------------------------------------------
+figS6_popularity_bias.pdf
+------------------------------------------------------------
+Titre : Biais de popularité et exposition à la longue traîne
+Panneaux : (a) rang de popularité catalogue des items recommandés par centile ;
+(b) part des recommandations qui sont des items de longue traîne (<= 10
+interactions).
+
+Légende LaTeX :
+  Biais de popularité et exposition à la longue traîne (Amazon Beauty). (a) Rang
+  de popularité catalogue des items recommandés, par centile de recommandation.
+  (b) Part des recommandations correspondant à des items de longue traîne
+  (<= 10 interactions d'entraînement) ; la ligne pointillée marque le taux de
+  base du catalogue. Le modèle réduit nettement la dépendance aux items de tête.
+
+Revendication soutenue : réduction de la dépendance aux identifiants et
+exposition accrue à la longue traîne.
+
+Mesures : part de longue traîne — LLM-SEMRec 31,08 %, LLM-only 8,70 %,
+MM-SASRec 6,43 %, SASRec 4,03 %, BPR-MF 2,83 %, BERT4Rec 0,69 % (taux de base du
+catalogue 70,56 %). Rang de popularité médian des items recommandés : 1 894 pour
+LLM-SEMRec contre 132 (SASRec), 174 (BPR-MF) et 15 (BERT4Rec).
+
+------------------------------------------------------------
+figS7_temporal_robustness.pdf
+------------------------------------------------------------
+Titre : Robustesse temporelle de la prédiction du prochain item
+Panneaux : (a) Recall@10 par intervalle entre la dernière interaction
+d'entraînement et la cible de test ; (b) courbe d'évidence.
+
+Légende LaTeX :
+  Robustesse au décalage temporel (Amazon Beauty). (a) Recall@10 en fonction de
+  l'intervalle séparant la dernière interaction d'entraînement de la cible de
+  test. (b) Recall@10 moyen selon le nombre d'interactions disponibles. Le modèle
+  domine tous les baselines dans chaque fenêtre temporelle et son avantage croît
+  avec le décalage, comportement attendu d'un modèle appuyé sur le contenu plutôt
+  que sur des identifiants.
+
+Revendication soutenue : le modèle domine dans chaque fenêtre et son avantage
+croît avec le décalage temporel.
+
+Mesures (Recall@10) :
+  < 1 mois   LLM-SEMRec 0,0241 | SASRec 0,0116 | BPR-MF 0,0199
+  1-3 mois   LLM-SEMRec 0,0240 | SASRec 0,0125 | BPR-MF 0,0217
+  3-12 mois  LLM-SEMRec 0,0124 | SASRec 0,0059 | BPR-MF 0,0127
+  1-3 ans    LLM-SEMRec 0,0123 | SASRec 0,0052 | BPR-MF 0,0055
+  > 3 ans    LLM-SEMRec 0,0077 | SASRec 0,0066 | BPR-MF 0,0099
+
+L'avantage relatif maximal est atteint sur 1-3 ans : 2,4x SASRec et 2,2x
+BPR-MF. Le seul intervalle où le modèle n'est pas premier est > 3 ans, qui ne
+contient que 905 utilisateurs.
+
+------------------------------------------------------------
+figS8_category_and_roc.pdf
+------------------------------------------------------------
+Titre : Comportement par catégorie et pouvoir discriminant
+Panneaux : (a) Recall@10 par catégorie de produit (niveau 1 du catalogue) ;
+(b) AUC par utilisateur sur les ensembles de candidats 1+100, avec intervalles
+de confiance bootstrap à 95 %.
+
+Légende LaTeX :
+  Comportement par catégorie et pouvoir discriminant (Amazon Beauty).
+  (a) Recall@10 par catégorie de produit. (b) AUC par utilisateur sur les
+  ensembles de candidats 1+100 ; les barres donnent la moyenne et les moustaches
+  l'intervalle de confiance bootstrap à 95 %, la ligne pointillée marque le
+  classement aléatoire. Le gain est cohérent sur les catégories et la séparation
+  positif/négatif est nettement supérieure à celle des baselines.
+
+Revendication soutenue : le gain est cohérent sur les catégories de produits et
+le classement repose bien sur le score, non sur un artefact de protocole.
+
+Mesures : AUC par utilisateur — LLM-SEMRec 0,752, LLM-only 0,639, MM-SASRec
+0,632, SASRec 0,618, BPR-MF 0,596, BERT4Rec 0,594 (classement aléatoire 0,500).
+Écart au meilleur baseline : +11,3 points. Le modèle est premier en Skin Care,
+Hair Care, Makeup, Bath & Body et Fragrance.
+
+------------------------------------------------------------
+figS9_content_cold_items.pdf
+------------------------------------------------------------
+Titre : Pourquoi le contenu compte — qualité de représentation des items froids
+Panneaux : (a) pureté de catégorie (10-NN) selon le nombre d'interactions
+d'entraînement de l'item, pour l'embedding d'identifiant appris et pour
+l'embedding LLM gelé ; (b) Recall@10 par tercile de popularité ; (c) gain
+relatif par rapport à SASRec.
+
+Légende LaTeX :
+  Qualité de représentation sur les items froids (Amazon Beauty). (a) Pureté de
+  catégorie des 10 plus proches voisins en fonction du nombre d'interactions
+  d'entraînement de l'item, pour l'embedding d'identifiant appris et pour
+  l'embedding LLM gelé ; la ligne pointillée marque le niveau du hasard pondéré.
+  (b) Recall@10 par tercile de popularité de l'item cible. (c) Gain relatif par
+  rapport à SASRec (l'infini signale que SASRec n'obtient aucune réussite).
+  Les représentations de contenu donnent aux items froids une position
+  sémantiquement significative, ce que les identifiants ne peuvent
+  structurellement pas fournir.
+
+Revendication soutenue : DÉMONSTRATION LA PLUS DIRECTE de la thèse du papier.
+
+Mesures (pureté 10-NN, niveau fin ; hasard pondéré 0,082) :
+
+  Interactions   n      Embedding d'ID   Embedding LLM gelé
+  0              33     0,136            0,248
+  1-2            527    0,111            0,566
+  3-5            4 221  0,210            0,671
+  6-10           3 757  0,295            0,678
+  11-50          3 066  0,397            0,688
+  > 50           497    0,343            0,525
+
+L'embedding d'identifiant reste au niveau du hasard (0,111 à 1-2 interactions)
+tandis que l'embedding LLM atteint déjà 0,566, soit 5,1 fois le hasard.
+Recall@10 sur cibles froides : 0,00341 pour LLM-SEMRec contre 0,00000 pour
+SASRec — ce dernier n'obtient aucune réussite sur les 7 329 utilisateurs à cible
+froide. Gain relatif 27,0x sur les cibles médianes et 1,4x sur les cibles chaudes.
+
+
+============================================================
+ANNEXE — UNE FIGURE NON INCLUSE DANS CE ZIP
+============================================================
+
+figS1_gate_weights.pdf   (NON INCLUSE — résultat négatif)
+
+Cette figure a été construite dans l'intention de documenter la fusion à porte
+sensible à la fiabilité (section IV-F), mais elle ne soutient pas le papier.
+
+Mesure : poids de porte effectivement appris (éq. 18) sur le modèle entraîné —
+item ID 0,900 ; image 0,030 ; texte (LLM) 0,022 ; feedback 0,015 ; temps 0,033.
+
+La porte place 90 % de son poids sur l'identifiant et environ 2-3 % sur chaque
+modalité de contenu, sans aucune adaptation à la popularité de l'item. La
+« fusion multimodale à porte sensible à la fiabilité » dégénère pratiquement en
+un modèle d'identifiants. Cela fournit l'explication mécaniste du résultat
+d'ablation selon lequel remplacer la porte par une concaténation simple améliore
+la précision (+24 %).
+
+Sa place est dans une section « limites » ou « analyse d'échec », pas comme
+résultat de soutien. Le PDF reste disponible dans le dépôt du projet :
+figures/figS1_gate_weights.pdf

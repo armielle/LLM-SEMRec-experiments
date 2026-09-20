@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Ablation study on Amazon Beauty (full-catalogue ranking). $\Delta$ is relative to the full model.}
+\label{tab:ablation_results}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Variant & R@10 & N@10 & M@10 & $\Delta$R@10 \\
+\midrule
+Full \model{} & \textbf{0.0194} & \textbf{0.0091} & \textbf{0.0061} & -- \\
+Without LLM representations & 0.0144 & 0.0071 & 0.0050 & -26.0\% \\
+Without visual representations & 0.0144 & 0.0068 & 0.0045 & -26.0\% \\
+Without self-supervised objectives & 0.0101 & 0.0052 & 0.0036 & -47.9\% \\
+Without variational module & 0.0253 & 0.0118 & 0.0078 & +30.2\% \\
+Simple concatenation fusion & 0.0241 & 0.0115 & 0.0077 & +24.4\% \\
+Uniform negative sampling & 0.0332 & 0.0151 & 0.0098 & +71.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}

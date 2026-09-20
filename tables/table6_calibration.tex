@@ -1,0 +1,30 @@
+\begin{table}[t]
+\centering
+\caption{Uncertainty and calibration analysis on Amazon Beauty. Users are sorted by the posterior uncertainty $\sigma_u$ (Eq.~38) into quartiles; the temperature is fitted post hoc on the validation split.}
+\label{tab:calibration}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Quartile & $n$ & mean $\sigma_u$ & R@10 & Mean rank \\
+\midrule
+\multicolumn{5}{l}{\textit{\model{}}} \\
+\quad Q1 & 5\,591 & 0.0715 & 0.0077 & 3901.2 \\
+\quad Q2 & 5\,590 & 0.0839 & 0.0098 & 3690.9 \\
+\quad Q3 & 5\,591 & 0.1010 & 0.0145 & 3179.2 \\
+\quad Q4 & 5\,591 & 0.1689 & 0.0451 & 1242.2 \\
+\quad ECE & \multicolumn{3}{l}{0.0381 (Brier 0.0202, $T=1.06$)} \\
+\multicolumn{5}{l}{\textit{SASRec}} \\
+\quad Q1 & 0 & nan & nan & nan \\
+\quad Q2 & 0 & nan & nan & nan \\
+\quad Q3 & 0 & nan & nan & nan \\
+\quad Q4 & 22\,363 & 1.0000 & 0.0095 & 4616.1 \\
+\quad ECE & \multicolumn{3}{l}{0.0062 (Brier 0.0086, $T=1.14$)} \\
+\multicolumn{5}{l}{\textit{LLM-only}} \\
+\quad Q1 & 0 & nan & nan & nan \\
+\quad Q2 & 0 & nan & nan & nan \\
+\quad Q3 & 0 & nan & nan & nan \\
+\quad Q4 & 22\,363 & 1.0000 & 0.0110 & 4364.5 \\
+\quad ECE & \multicolumn{3}{l}{0.0087 (Brier 0.0095, $T=1.06$)} \\
+\bottomrule
+\end{tabular}
+\end{table}

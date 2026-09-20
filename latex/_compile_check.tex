@@ -1,0 +1,32 @@
+% Standalone wrapper to verify that results_section.tex compiles.
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+% Counter used by the section's cross-references.
+\newcounter{dummy}
+\graphicspath{{../figures/}}
+
+\newcommand{\model}[1]{\textsc{LLM-SEMRec}}
+
+\title{LLM-SEMRec --- compile check}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\clearpage
+
+\input{experiments_results.tex}
+
+\end{document}

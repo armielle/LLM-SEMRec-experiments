@@ -1,0 +1,33 @@
+\begin{table}[t]
+\centering
+\caption{Computational complexity. Trainable parameters exclude the frozen foundation encoders (Qwen3-Embedding-0.6B: 595.8\,M, SigLIP~2 base vision tower: 92.9\,M), whose item representations are precomputed and cached.}
+\label{tab:complexity}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Model & Trainable params & s/epoch & Latency \\
+\midrule
+Popularity (Amazon) & 0 & -- & -- \\
+BPR-MF (Amazon) & 2\,205\,696 & 1.8 & -- \\
+GRU4Rec (Amazon) & 1\,657\,024 & 9.0 & -- \\
+Caser (Amazon) & 1\,694\,792 & 5.5 & -- \\
+SASRec (Amazon) & 2\,222\,272 & 49.5 & -- \\
+BERT4Rec (Amazon) & 2\,222\,272 & 58.5 & -- \\
+MM-SASRec (Amazon) & 2\,468\,160 & 71.4 & -- \\
+LLM-only (Amazon) & 2\,369\,856 & 62.8 & -- \\
+\model{} (Amazon) & 2\,728\,734 & 165.0 & -- \\
+Popularity (MovieLens-1M) & 0 & -- & -- \\
+BPR-MF (MovieLens-1M) & 605\,184 & 0.7 & -- \\
+GRU4Rec (MovieLens-1M) & 545\,344 & 2.1 & -- \\
+Caser (MovieLens-1M) & 583\,112 & 1.6 & -- \\
+SASRec (MovieLens-1M) & 1\,110\,592 & 11.8 & -- \\
+BERT4Rec (MovieLens-1M) & 1\,110\,592 & 11.5 & -- \\
+CL4SRec (MovieLens-1M) & 1\,110\,592 & 22.8 & -- \\
+S3-Rec (MovieLens-1M) & 1\,110\,592 & 32.8 & -- \\
+MM-SASRec (MovieLens-1M) & 1\,356\,480 & 15.6 & -- \\
+LLM-only (MovieLens-1M) & 1\,258\,176 & 14.0 & -- \\
+MMSSL-lite (MovieLens-1M) & 1\,357\,900 & 14.5 & -- \\
+\model{} (MovieLens-1M) & 1\,617\,054 & 34.6 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

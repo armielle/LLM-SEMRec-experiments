@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering
+\caption{Ablation protocol for \model{}. A check mark indicates that the component is retained. SSL denotes masked item prediction, sequence-view contrastive learning and cross-modal contrastive alignment.}
+\label{tab:ablation_protocol}
+\small
+\begin{tabular}{lcccccccc}
+\toprule
+Variant & Qwen3 text & SigLIP image & Gated fusion & MIP & SeqCL & CMCL & VAE & Mixed neg. \\
+\midrule
+Full \model{} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
+w/o Qwen3 & -- & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
+w/o SigLIP & \cmark & -- & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark \\
+w/o SSL & \cmark & \cmark & \cmark & -- & -- & -- & \cmark & \cmark \\
+w/o VAE & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & -- & \cmark \\
+Simple fusion & \cmark & \cmark & -- & \cmark & \cmark & \cmark & \cmark & \cmark \\
+Uniform negatives & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark & -- \\
+\bottomrule
+\end{tabular}
+\end{table*}

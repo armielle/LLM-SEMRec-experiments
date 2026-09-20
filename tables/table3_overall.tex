@@ -1,0 +1,36 @@
+\begin{table*}[t]
+\centering
+\caption{Overall recommendation performance under full-catalogue ranking (chronological leave-two-out split, identical candidate sets for all models). Best result per dataset and column in bold. Mean $\pm$ std over seeds where available.}
+\label{tab:overall}
+\small
+\begin{tabular}{llrrrrrr}
+\toprule
+Dataset & Model & R@10 & N@10 & M@10 & R@20 & N@20 & M@20 \\
+\midrule
+\multirow{9}{*}{Amazon Beauty}
+ & Popularity & 0.0120 & 0.0055 & 0.0036 & 0.0195 & 0.0073 & 0.0040 \\
+ & BPR-MF & 0.0158 & 0.0063 & 0.0035 & 0.0277 & 0.0093 & 0.0043 \\
+ & GRU4Rec & 0.0012 & 0.0005 & 0.0003 & 0.0019 & 0.0007 & 0.0004 \\
+ & Caser & 0.0011 & 0.0005 & 0.0003 & 0.0021 & 0.0007 & 0.0003 \\
+ & SASRec & 0.0095 & 0.0047 & 0.0033 & 0.0165 & 0.0065 & 0.0038 \\
+ & BERT4Rec & 0.0113 & 0.0056 & 0.0038 & 0.0164 & 0.0068 & 0.0042 \\
+ & MM-SASRec & 0.0113 & 0.0053 & 0.0035 & 0.0189 & 0.0072 & 0.0040 \\
+ & LLM-only & 0.0110 & 0.0049 & 0.0031 & 0.0164 & 0.0063 & 0.0035 \\
+ & \model{} & \textbf{0.0193} & \textbf{0.0093} & \textbf{0.0063} & \textbf{0.0349} & \textbf{0.0132} & \textbf{0.0074} \\
+\midrule
+\multirow{12}{*}{MovieLens-1M}
+ & Popularity & 0.0162 & 0.0079 & 0.0055 & 0.0402 & 0.0139 & 0.0071 \\
+ & BPR-MF & \textbf{0.0366} & 0.0157 & 0.0095 & \textbf{0.0798} & \textbf{0.0265} & \textbf{0.0124} \\
+ & GRU4Rec & 0.0121 & 0.0054 & 0.0034 & 0.0228 & 0.0081 & 0.0042 \\
+ & Caser & 0.0038 & 0.0017 & 0.0011 & 0.0063 & 0.0024 & 0.0013 \\
+ & SASRec & 0.0237 & 0.0111 & 0.0073 & 0.0425 & 0.0158 & 0.0086 \\
+ & BERT4Rec & 0.0252 & 0.0125 & 0.0087 & 0.0437 & 0.0171 & 0.0099 \\
+ & CL4SRec & 0.0247 & 0.0118 & 0.0080 & 0.0442 & 0.0167 & 0.0093 \\
+ & S3-Rec & 0.0212 & 0.0101 & 0.0068 & 0.0392 & 0.0147 & 0.0080 \\
+ & MM-SASRec & 0.0270 & 0.0129 & 0.0086 & 0.0460 & 0.0177 & 0.0099 \\
+ & LLM-only & 0.0303 & 0.0136 & 0.0087 & 0.0555 & 0.0200 & 0.0104 \\
+ & MMSSL-lite & 0.0242 & 0.0110 & 0.0070 & 0.0445 & 0.0161 & 0.0084 \\
+ & \model{} & 0.0334 & \textbf{0.0160} & \textbf{0.0107} & 0.0500 & 0.0201 & 0.0119 \\
+\bottomrule
+\end{tabular}
+\end{table*}

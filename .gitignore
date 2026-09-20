@@ -1,0 +1,46 @@
+# ---------------------------------------------------------------
+# Large, regenerable artefacts -- never committed
+# ---------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Downloaded datasets (769 MB) -- rebuilt by code/prep.py
+data/
+
+# Raw downloaded archives (501 MB) -- re-fetched from SNAP Stanford by prep.py
+raw/
+
+# Unzipped copy of the figure bundle -- the zip and figures/ already carry these
+LLM-SEMRec_figures/
+
+# Cached frozen-encoder embeddings (97 MB) -- rebuilt by code/encode_text.py
+# and code/encode_image.py
+cache/
+
+# Trained checkpoints (407 MB) -- rebuilt by code/run_main.py
+models/
+
+# Run logs
+logs/
+
+# ---------------------------------------------------------------
+# Per-run result files weigh 1.4-5.7 MB each because they carry
+# per-user rank arrays. Keep only the small aggregates.
+# Regenerate the full files with code/run_main.py, then the aggregates
+# with code/make_headline.py.
+# ---------------------------------------------------------------
+results/*.json
+!results/headline_metrics.json
+!results/analysis__*.json
+!results/_summary_*.json
+!results/significance.json
+
+# ---------------------------------------------------------------
+# OS / editor noise
+# ---------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp

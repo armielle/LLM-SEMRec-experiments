@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\caption{Cold-start analysis (Amazon Beauty). Buckets are terciles of the target item's training popularity.}
+\label{tab:coldstart}
+\small
+\begin{tabular}{llrrr}
+\toprule
+Model & Bucket & $n$ & R@10 & N@10 \\
+\midrule
+\model{} & cold & 8\,275 & 0.0037 & 0.0015 \\
+\model{} & medium & 6\,667 & 0.0154 & 0.0070 \\
+\model{} & warm & 7\,421 & 0.0400 & 0.0201 \\
+\midrule
+SASRec & cold & 8\,275 & 0.0000 & 0.0000 \\
+SASRec & medium & 6\,667 & 0.0006 & 0.0002 \\
+SASRec & warm & 7\,421 & 0.0280 & 0.0140 \\
+\midrule
+LLM-only & cold & 8\,275 & 0.0000 & 0.0000 \\
+LLM-only & medium & 6\,667 & 0.0010 & 0.0004 \\
+LLM-only & warm & 7\,421 & 0.0323 & 0.0145 \\
+\bottomrule
+\end{tabular}
+\end{table}

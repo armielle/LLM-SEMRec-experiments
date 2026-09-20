@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering
+\caption{Dataset statistics after iterative 5-core filtering and chronological splitting. Density is the number of interactions divided by $|\mathcal{U}|\cdot|\mathcal{I}|$. Image coverage is the fraction of catalogue items for which a product image could be retrieved; text coverage is the fraction with a non-empty textual profile (Eq.~\ref{eq:textprofile}).}
+\label{tab:datasets}
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+Dataset & Users & Items & Interactions & Density (\%) & Image cov. (\%) & Text cov. (\%) & Avg. seq. len. \\
+\midrule
+Amazon Beauty & 22\,363 & 12\,101 & 198\,502 & 0.0734 & 99.98 & 100.00 & 8.88 \\
+Amazon Fashion & 39\,387 & 23\,033 & 278\,677 & 0.0307 & nan & 100.00 & 7.08 \\
+MovieLens-1M & 6\,040 & 3\,416 & 999\,611 & 4.8448 & nan & 100.00 & 165.50 \\
+\bottomrule
+\end{tabular}
+\end{table*}
